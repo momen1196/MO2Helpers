@@ -11,7 +11,7 @@
     <Description>A Library adds valuable functions to Enumerables, Queryables, Strings, and file uploading.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Enumerables, Queryables, Strings, Files</PackageTags>
-    <RepositoryUrl></RepositoryUrl>
+    <RepositoryUrl>https://github.com/momen1196/MO2Helpers.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
