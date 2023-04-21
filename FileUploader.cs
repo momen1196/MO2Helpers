@@ -45,7 +45,7 @@ namespace MO2Helpers
             await fileStream.WriteAsync(binaryData);
 
             return string.IsNullOrEmpty(url) ?
-                fileName : Path.Combine(url, fileName);
+                fileName : Path.Combine(url, fileName).Replace("\\", "/");
 
             static void ValidateBase64(string base64String,
                 string rootPath, string fileExtension)
@@ -92,7 +92,7 @@ namespace MO2Helpers
             fileStream.Flush();
 
             return string.IsNullOrEmpty(url) ?
-                fileName : Path.Combine(url, fileName);
+                fileName : Path.Combine(url, fileName).Replace("\\", "/");
 
             static void ValidateFile(IFormFile file,
                 string rootPath)
