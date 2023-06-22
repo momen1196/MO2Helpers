@@ -79,35 +79,65 @@ namespace MO2Helpers
         /// <returns>
         /// A List<out T> constructed from a <paramref name="table"/>.
         /// </returns>
-        public static IEnumerable<T> ToList<T>(
+        public static List<T> ToList<T>(
             this DataTable table)
         {
             var data = new List<T>();
             foreach (DataRow row in table.Rows)
-                data.Add(GetItem(row));
+                data.Add(GetItem<T>(row));
             return data;
+        }
 
-            static T GetItem(DataRow dr)
+
+        /// <summary>
+        /// Create a T[] from a DataTable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>
+        /// A T[] constructed from a <paramref name="table"/>.
+        /// </returns>
+        public static T[] ToArray<T>(
+            this DataTable table)
+        {
+            var data = new List<T>();
+            foreach (DataRow row in table.Rows)
+                data.Add(GetItem<T>(row));
+            return data.ToArray();
+        }
+
+
+        /// <summary>
+        /// Create a IEnumerable<out T> from a DataTable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>
+        /// A IEnumerable<out T> constructed from a <paramref name="table"/>.
+        /// </returns>
+        public static IEnumerable<T> ToEnumerable<T>(
+            this DataTable table)
+        {
+            foreach (DataRow row in table.Rows)
+                yield return GetItem<T>(row);
+        }
+        static T GetItem<T>(DataRow dr)
+        {
+            Type temp = typeof(T);
+            T obj = Activator.CreateInstance<T>();
+
+            foreach (DataColumn column in dr.Table.Columns)
             {
-                Type temp = typeof(T);
-                T obj = Activator.CreateInstance<T>();
-
-                foreach (DataColumn column in dr.Table.Columns)
+                foreach (PropertyInfo pro in temp.GetProperties())
                 {
-                    foreach (PropertyInfo pro in temp.GetProperties())
-                    {
-                        if (pro.Name == column.ColumnName)
-                            pro.SetValue(obj,
-                                dr[column.ColumnName] == DBNull.Value ?
-                                null : dr[column.ColumnName], null);
-                        else
-                            continue;
-                    }
+                    if (pro.Name == column.ColumnName)
+                        pro.SetValue(obj,
+                            dr[column.ColumnName] == DBNull.Value ?
+                            null : dr[column.ColumnName], null);
+                    else
+                        continue;
                 }
-                return obj;
             }
+            return obj;
         }
     }
-
 }
 
