@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace MO2Helpers
 {
-    public static class FileUploader
+    /// <summary>
+    /// Add support methods to make handling file easier.
+    /// </summary>
+    public static class FileUpLoader
     {
+
         /// <summary>
         /// Upload Base64 string file onto the server.
         /// </summary>
@@ -15,11 +19,9 @@ namespace MO2Helpers
         /// <param name="rootPath">The application root path on a server.</param>
         /// <param name="uploadDirectory">A directory name to upload the file on it, in case want to create a specific uploaded directory.</param>
         /// <param name="dateDirectory">A flag to manage directory creation based on the date 'yyyy/mm/dd'.</param>
-        /// <returns>
-        /// A Url for the uploaded file.
-        /// </returns>
+        /// <returns>A Url for the uploaded file.</returns>
         /// <exception cref="ArgumentNullException">
-        /// Case <param name="base64String"> null or empty, <param name="fileExtension"> null or empty, or <param name="rootPath"> null or empty.
+        /// Case <paramref name="base64String"/> null or empty, <paramref name="fileExtension"/> null or empty, or <paramref name="rootPath"/> null or empty.
         /// </exception>
         public static async Task<string> Upload(
             this string base64String,
@@ -31,7 +33,7 @@ namespace MO2Helpers
             // validate
             ValidateBase64(base64String, rootPath, fileExtension);
 
-            // handel directory
+            // handle directory
             string url = HandelDirectory(rootPath, uploadDirectory, dateDirectory);
             string filePath = string.IsNullOrEmpty(url) ?
                 rootPath : Path.Combine(rootPath, url);
@@ -60,6 +62,7 @@ namespace MO2Helpers
         }
 
 
+
         /// <summary>
         /// Upload IFormFile file onto the server.
         /// </summary>
@@ -69,7 +72,7 @@ namespace MO2Helpers
         /// <param name="dateDirectory">A flag to manage directory creation based on the date 'yyyy/mm/dd'.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">
-        /// Case <param name="file"> null or empty, or <param name="rootPath"> null or empty.
+        /// Case <paramref name="file"/> null or empty, or <paramref name="rootPath"/> null or empty.
         /// </exception>
         public static async Task<string> Upload(
             this IFormFile file,
@@ -80,7 +83,7 @@ namespace MO2Helpers
             // validate
             ValidateFile(file, rootPath);
 
-            // handel directory
+            // handle directory
             string url = HandelDirectory(rootPath, uploadDirectory, dateDirectory);
             string filePath = string.IsNullOrEmpty(url) ?
                 rootPath : Path.Combine(rootPath, url);
@@ -124,6 +127,5 @@ namespace MO2Helpers
             return filePath;
         }
     }
-
 }
 

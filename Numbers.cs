@@ -1,7 +1,9 @@
 ﻿namespace MO2Helpers
 {
-
-    public static class Values
+    /// <summary>
+    /// Add support methods for numbers values.
+    /// </summary>
+    public static class Numbers
     {
         /// <summary>
         /// Determines whether a int16 number between two numbers.
@@ -87,5 +89,4 @@
             =>
             value >= start && value <= end;
     }
-
 }

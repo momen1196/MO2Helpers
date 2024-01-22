@@ -7,12 +7,16 @@ using System.Linq;
 
 namespace MO2Helpers
 {
+    /// <summary>
+    /// Add support methods for enumerators.
+    /// </summary>
     public static class Enumerators
     {
         /// <summary>
         /// Determines whether a sequence contains a specified element.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="sequence">Represents Collection<typeparamref name="TSource"/> of data.</param>
         /// <param name="value">The value to locate in the sequence</param>
         /// <returns>true if the value founded in a sequence; otherwise, false</returns>
         public static bool In<TSource>(
@@ -21,15 +25,15 @@ namespace MO2Helpers
             sequence.Contains(value);
 
 
+
         /// <summary>
         /// Filters a sequence of values based on a predicate only if the condition is meet.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="sequence">Represents Collection<typeparamref name="TSource"/> of data.</param>
         /// <param name="predicate">A function to test each element for a condition.</param>
         /// <param name="condition">Control whether applying the predicate or not.</param>
-        /// <returns>
-        /// An IEnumerable<out TSource> that contains elements from the input <paramref name="sequence"/> that satisfy the condtion specified by predicate.
-        /// </returns>
+        /// <returns>An IEnumerable<typeparamref name="TSource"/> that contains elements from the input <paramref name="sequence"/> that satisfy the condition specified by predicate.</returns>
         public static IEnumerable<TSource> WhereIf<TSource>(
             this IEnumerable<TSource> sequence,
             Func<TSource, bool> predicate,
@@ -37,13 +41,13 @@ namespace MO2Helpers
             condition ? sequence.Where(predicate) : sequence;
 
 
+
         /// <summary>
-        /// Create a DataTable from an IEnumerable<TSource>.
+        /// Create a DataTable from an IEnumerable<typeparamref name="TSource"/>.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <returns>
-        /// A DataTable constructed from a <paramref name="sequence"/>.
-        /// </returns>
+        /// <param name="sequence">Represents Collection<typeparamref name="TSource"/> of data.</param>
+        /// <returns>A DataTable constructed from a <paramref name="sequence"/>.</returns>
         public static DataTable ToDataTable<TSource>(
             this IEnumerable<TSource> sequence)
         {
@@ -73,53 +77,19 @@ namespace MO2Helpers
 
 
         /// <summary>
-        /// Create a List<out T> from a DataTable.
+        /// Create a IEnumerable<typeparamref name="T"/> from a DataTable.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <returns>
-        /// A List<out T> constructed from a <paramref name="table"/>.
-        /// </returns>
-        public static List<T> ToList<T>(
-            this DataTable table)
-        {
-            var data = new List<T>();
-            foreach (DataRow row in table.Rows)
-                data.Add(GetItem<T>(row));
-            return data;
-        }
-
-
-        /// <summary>
-        /// Create a T[] from a DataTable.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>
-        /// A T[] constructed from a <paramref name="table"/>.
-        /// </returns>
-        public static T[] ToArray<T>(
-            this DataTable table)
-        {
-            var data = new List<T>();
-            foreach (DataRow row in table.Rows)
-                data.Add(GetItem<T>(row));
-            return data.ToArray();
-        }
-
-
-        /// <summary>
-        /// Create a IEnumerable<out T> from a DataTable.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>
-        /// A IEnumerable<out T> constructed from a <paramref name="table"/>.
-        /// </returns>
+        /// <param name="table">DataTable to be converted.</param>
+        /// <returns>A IEnumerable<typeparamref name="T"/> constructed from a <paramref name="table"/>.</returns>
         public static IEnumerable<T> ToEnumerable<T>(
             this DataTable table)
         {
             foreach (DataRow row in table.Rows)
                 yield return GetItem<T>(row);
         }
-        static T GetItem<T>(DataRow dr)
+
+        internal static T GetItem<T>(DataRow dr)
         {
             Type temp = typeof(T);
             T obj = Activator.CreateInstance<T>();
